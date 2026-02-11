@@ -1,0 +1,11 @@
+﻿@model StudentViewModel
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <input asp-for="Name" />
+    <input asp-for="Age" />
+    <input asp-for="Email" />
+
+    <button type="submit">Update</button>
+</form>
