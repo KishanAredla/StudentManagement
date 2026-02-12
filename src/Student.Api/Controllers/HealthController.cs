@@ -9,7 +9,7 @@ namespace StudentApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(new { status = "API is not working" });
+            return Ok(new { status = "API is running" });
         }
     }
 }
