@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  student-api:
+    build:
+      context: ./src/Student.Api
+    ports:
+      - "7001:8080"
+
+  student-web:
+    build:
+      context: ./src/Student.Web
+    ports:
+      - "7000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ApiSettings__BaseUrl: http://student-api:8080/api/
+    depends_on:
+      - student-api

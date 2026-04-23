@@ -11,21 +11,40 @@ namespace StudentApi.Services
     {
         private readonly IStudentRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ILogger<StudentService> _logger;
 
-        public StudentService(IStudentRepository repository, IMapper mapper)
+
+        public StudentService(IStudentRepository repository, IMapper mapper, ILogger<StudentService> logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<StudentDto> GetByIdAsync(int id)
         {
+            _logger.LogInformation(
+                "Starting GetById operation for StudentId={StudentId}",
+                id);
+
             var student = await _repository.GetByIdAsync(id);
+
             if (student == null)
-                throw new NotFoundException("Student not found");
+            {
+                _logger.LogWarning(
+                    "Student not found. StudentId={StudentId}",
+                    id);
+
+                throw new NotFoundException($"Student not found with Id {id}");
+            }
+
+            _logger.LogInformation(
+                "Student retrieved successfully. StudentId={StudentId}",
+                id);
 
             return _mapper.Map<StudentDto>(student);
         }
+
 
         public async Task<List<StudentDto>> GetAllAsync()
         {
@@ -35,18 +54,34 @@ namespace StudentApi.Services
 
         public async Task<StudentDto> CreateAsync(CreateStudentDto dto)
         {
+            _logger.LogInformation(
+                "Starting student creation. Email={Email}",
+                dto.Email);
+
             dto.Name = dto.Name.Trim();
-            dto.Email = dto.Email.Trim().ToLower();
+            dto.Email = dto.Email.Trim().ToLowerInvariant();
 
             if (await _repository.EmailExistsAsync(dto.Email))
+            {
+                _logger.LogWarning(
+                    "Student creation failed. Email already exists. Email={Email}",
+                    dto.Email);
+
                 throw new BadRequestException("Email already exists");
+            }
 
             var student = _mapper.Map<Student>(dto);
 
             await _repository.AddAsync(student);
 
+            _logger.LogInformation(
+                "Student created successfully. StudentId={StudentId}, Email={Email}",
+                student.Id,
+                dto.Email);
+
             return _mapper.Map<StudentDto>(student);
         }
+
 
         public async Task UpdateAsync(int id, UpdateStudentDto dto)
         {

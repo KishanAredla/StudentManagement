@@ -99,26 +99,39 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
-
+Console.WriteLine(app.Environment.EnvironmentName);
 //Enable Swagger Middleware
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+
+//    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+//    app.UseSwaggerUI(options =>
+//    {
+//        foreach (var description in provider.ApiVersionDescriptions)
+//        {
+//            options.SwaggerEndpoint(
+//                $"/swagger/{description.GroupName}/swagger.json",
+//                $"Student API {description.GroupName.ToUpperInvariant()}"
+//            );
+//        }
+//    });
+//}
+app.UseSwagger();
+
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-
-    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-    app.UseSwaggerUI(options =>
+    foreach (var description in provider.ApiVersionDescriptions)
     {
-        foreach (var description in provider.ApiVersionDescriptions)
-        {
-            options.SwaggerEndpoint(
-                $"/swagger/{description.GroupName}/swagger.json",
-                $"Student API {description.GroupName.ToUpperInvariant()}"
-            );
-        }
-    });
-}
-
+        options.SwaggerEndpoint(
+            $"/swagger/{description.GroupName}/swagger.json",
+            $"Student API {description.GroupName.ToUpperInvariant()}"
+        );
+    }
+});
 
 // Configure the HTTP request pipeline.
 

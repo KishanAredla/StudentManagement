@@ -4,6 +4,10 @@
     <Project Path="src/Student.Api/StudentApi.csproj" />
   </Folder>
   <Folder Name="/src/Student.Web/">
-    <Project Path="src/Student.Web/Student WebApp.csproj" />
+    <Project Path="src/Student.Web/Student.Web.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Student.Api.Tests/Student.Api.Tests.csproj" Id="1ba075e2-6eec-44d9-9158-ea59c6414742" />
+    <Project Path="XUnit.Practice.Tests/XUnit.Practice.Tests.csproj" Id="22ee140d-40cf-4166-93fd-9762d0114429" />
   </Folder>
 </Solution>

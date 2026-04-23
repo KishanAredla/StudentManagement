@@ -13,7 +13,8 @@ namespace Student_WebApp.Services
 
         public async Task<string> LoginAsync(LoginViewModel model)
         {
-            var response = await _client.PostAsJsonAsync("Auth/login", model);
+            Console.WriteLine(_client.BaseAddress + "auth/login");
+            var response = await _client.PostAsJsonAsync("auth/login", model);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
