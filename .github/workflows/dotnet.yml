@@ -26,3 +26,12 @@ jobs:
 
     - name: Run tests
       run: dotnet test --no-build
+
+    - name: Publish project
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: app
+        path: ./publish
